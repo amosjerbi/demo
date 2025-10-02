@@ -1,9 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 41
 __lua__
--- crystal runner
 -- a fast-paced platformer
--- inspired by sonic mechanics
 
 -- game state
 game_state = "title" -- title, playing, gameover
@@ -1063,7 +1061,6 @@ function draw_player()
 end
 
 function draw_crystal(x, y, type)
-    -- draw like sonic rings
     local spin = frame / 8 % 8
     if spin < 2 then
         -- front view
