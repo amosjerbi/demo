@@ -1,59 +1,52 @@
 # Fetcher
 
-A ROM downloading and management tool for retro gaming devices, with both a Python-based fetcher and a Pico-8 game showcase.
+A file downloading and management tool for retro gaming devices that run Rocknix system.
 
 ## Projects
 
-### 🎮 ROM Fetcher
-A comprehensive ROM downloading tool built for PortMaster-compatible devices.
+### 🎮 File Fetcher
+A comprehensive file downloading tool built for PortMaster-compatible devices.
 
 **Features:**
-- Multi-platform ROM downloading from various sources
+- Multi-platform file downloading from various sources
 - LÖVE2D-based user interface with on-screen keyboard
 - Support for multiple gaming platforms (NES, SNES, Genesis, etc.)
-- Automatic ROM organization and management
+- Automatic file organization and management
 - Compatible with handheld gaming devices
 
 **Components:**
-- `fetcher.py` - Main ROM fetching engine with platform support
+- `fetcher.py` - Main file fetching engine with platform support
 - `downloaderui/` - LÖVE2D-based graphical interface
 - `fetcher.sh` - PortMaster launcher script
 - `download.py` & `downloader.py` - Download management modules
 
-### 🕹️ Pico-8 Game
-A simple Pico-8 game created to showcase the Romnix app in a YouTube short.
+## How to Use
 
-**Location:** `pico-8/`
-- `romnix.p8.png` - Pico-8 cartridge file
-- `romnix.p8.png.zip` - Compressed cartridge
+### First things first
+1. Edit fetcher.py with your own links in line 14
+2. Make sure to add your links in PLATFORM_URLS = {}
+3. If a directory doesn't exist it'll be created
 
-## Usage
-
-### Running the ROM Fetcher
-For PortMaster-compatible devices:
-```bash
-./fetcher.sh
-```
-
-The script will:
-1. Set up the proper environment
-2. Launch the LÖVE2D interface
-3. Allow browsing and downloading ROMs from various sources
-
-### Platform Support
-The fetcher supports multiple retro gaming platforms including:
-- NES/Famicom
-- SNES/Super Famicom  
-- Sega Genesis/Mega Drive
-- Game Boy/Game Boy Color
-- And many more...
+### Installation
+1. Copy the entire `fetcher` directory to your device's ports folder (usually `/roms/ports/`)
+2. Copy `fetcher.sh` to the same location
+3. Run Fetcher from ports menu
 
 ## Requirements
 
 - LÖVE2D engine (included in `libs/`)
 - Python 3.x
 - PortMaster-compatible device (or Linux system)
-- Internet connection for ROM downloading
+- Internet connection for file downloading
+
+
+### Pico-8 Game
+A simple Pico-8 game created to showcase Fetcher.
+
+**Location:** `pico-8/`
+- `romnix.p8.png` - Pico-8 cartridge file
+- `romnix.p8.png.zip` - Compressed cartridge
+
 
 ## License
 
