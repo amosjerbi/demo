@@ -15,16 +15,16 @@ A file downloading and management tool for retro handhelds that run Rocknix syst
 
 **Features:**
 - Multi-platform file downloading from various sources
-- LÖVE2D-based user interface with on-screen keyboard
-- Support for multiple gaming platforms (NES, SNES, Genesis, etc.)
-- Automatic file organization and management
-- Compatible with handheld gaming devices
+- Search files using LÖVE2D-based user interface with on-screen keyboard (press X for search)
+- Download files in bulk after you search (Press L1)
+- Quickly browse by pressing L1/R1 or press and hold down
 
 **Components:**
 - `fetcher.py` - Main file fetching engine with platform support
 - `downloaderui/` - LÖVE2D-based graphical interface
 - `fetcher.sh` - PortMaster launcher script
 - `download.py` & `downloader.py` - Download management modules
+- `main.lua` - Change UI to your liking using Font sizes & Color palette
 
 ### Pico-8 Game
 A simple Pico-8 game created to showcase Fetcher.
