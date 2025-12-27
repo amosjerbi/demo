@@ -13,6 +13,8 @@ import time
 # Platform URLs Single Source of Truth
 PLATFORM_URLS = {
     "FOLDER_NAME": "YOUR_LINK_GOES_HERE",
+    "FOLDER_NAME": "YOUR_LINK_GOES_HERE",
+    "FOLDER_NAME": "YOUR_LINK_GOES_HERE",
 }
 
 CACHE_DIR = "/tmp/file_cache"
