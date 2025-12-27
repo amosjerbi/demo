@@ -1,11 +1,6 @@
 # Fetcher
 
-A file downloading and management tool for retro gaming devices that run Rocknix system.
-
-## Projects
-
-### 🎮 File Fetcher
-A comprehensive file downloading tool built for PortMaster-compatible devices.
+A file downloading and management tool for retro handhelds that run Rocknix system.
 
 **Features:**
 - Multi-platform file downloading from various sources
