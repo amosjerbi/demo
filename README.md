@@ -16,7 +16,6 @@ A file downloading and management tool for retro handhelds that run Rocknix syst
 **Features:**
 - Multi-platform file downloading from various sources
 - Search files using LÖVE2D-based user interface with on-screen keyboard (press X for search)
-- Download files in bulk after you search (Press L1)
 - Quickly browse by pressing L1/R1 or press and hold down
 
 **Components:**
