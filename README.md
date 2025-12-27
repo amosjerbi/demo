@@ -33,7 +33,10 @@ A simple Pico-8 game created to showcase Fetcher.
 - `romnix.p8.png` - Pico-8 cartridge file
 - `romnix.p8.png.zip` - Compressed cartridge
 
+## Important Disclaimer
+
+This tool is designed for downloading legally obtained files only. Users are solely responsible for ensuring they have the legal right to download and possess any files obtained through this software.
 
 ## License
 
-Free to use for personal retro gaming purposes.
+Free to use for personal retro gaming purposes. Use at your own risk and in compliance with applicable laws.
