@@ -12,7 +12,7 @@ import time
 
 # Platform URLs Single Source of Truth
 PLATFORM_URLS = {
-    "pico-8": "https://archive.org/download/pico-8_cart_collection",
+    "FOLDER_NAME": "YOUR_LINK_GOES_HERE",
 }
 
 CACHE_DIR = "/tmp/file_cache"
