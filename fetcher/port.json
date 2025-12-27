@@ -1,0 +1,13 @@
+{
+    "version": 4,
+    "name": "downloader",
+    "attr": {
+        "title": "File Downloader",
+        "desc": "Download files from GitHub",
+        "genres": ["tools"]
+    },
+    "status": {
+        "source": "Local",
+        "status": "Installed"
+    }
+}
