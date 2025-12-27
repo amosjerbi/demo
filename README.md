@@ -25,6 +25,12 @@ A file downloading and management tool for retro handhelds that run Rocknix syst
 - `download.py` & `downloader.py` - Download management modules
 - `main.lua` - Change UI to your liking using Font sizes & Color palette
 
+**Troubleshooting:**
+- Don't see your list? run this in terminal to clear cache:
+  ```
+  sshpass -p "rocknix" ssh -o StrictHostKeyChecking=no root@192.168.0.0 "rm -rf /tmp/file_cache /tmp/platforms.json /tmp/file_list.json"
+  ```
+
 ### Pico-8 Game
 A simple Pico-8 game created to showcase Fetcher.
 
