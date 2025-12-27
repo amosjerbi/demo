@@ -141,7 +141,7 @@ function love.load()
     fontColors = {
         regular = {0.60, 0.60, 0.60} -- Medium gray text
     }
-    -- Color palette - Sega Genesis Theme
+    -- Color palette UI
     bgColor = {0.12, 0.12, 0.12} -- Very dark black background
     footerColor = {0.10, 0.10, 0.10} -- Very dark gray for footer
     titleColor = {0.25, 0.25, 0.25} -- Medium gray for titles
