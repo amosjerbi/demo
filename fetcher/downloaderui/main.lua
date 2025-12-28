@@ -452,19 +452,19 @@ function drawDownloadScreen()
         love.graphics.printf("File: " .. fileName, 0, 130, gameWidth, 'center')
     end
     
-    love.graphics.setColor(selectedColor)
+    love.graphics.setColor(textColor)
     love.graphics.setFont(titleFont)
     love.graphics.printf(gameState.downloadStatus, 0, 180, gameWidth, 'center')
     
 end
 
 function drawBulkDownloadScreen()
-    love.graphics.setColor(textColor)
+    love.graphics.setColor(titleColor)
     love.graphics.setFont(titleFont)
     love.graphics.printf("BULK DOWNLOADING FileS", 0, 30, gameWidth, 'center')
     
     local platform = platforms[gameState.selectedPlatform]
-    love.graphics.setColor(textColor)
+    love.graphics.setColor(titleColor)
     love.graphics.setFont(headerFont)
     love.graphics.printf("Platform: " .. platform.name, 0, 70, gameWidth, 'center')
     
@@ -487,13 +487,13 @@ function drawBulkDownloadScreen()
     local barY = 170
     
     -- Background bar
-    love.graphics.setColor(progressBgColor)
+    love.graphics.setColor(footerColor)
     love.graphics.rectangle('fill', barX, barY, barWidth, barHeight)
     
     -- Progress bar
     if gameState.bulkDownloadTotal > 0 then
         local progress = gameState.bulkDownloadIndex / gameState.bulkDownloadTotal
-        love.graphics.setColor(selectedColor) -- Use bright orange for progress bar
+        love.graphics.setColor(selectionBgColor) -- Use dark green for progress bar
         love.graphics.rectangle('fill', barX, barY, barWidth * progress, barHeight)
     end
     
@@ -512,21 +512,21 @@ function drawBulkDownloadScreen()
     end
     
     -- Status
-    love.graphics.setColor(selectedColor)
+    love.graphics.setColor(titleColor)
     love.graphics.setFont(titleFont)
     love.graphics.printf(gameState.downloadStatus, 0, 250, gameWidth, 'center')
     
     -- Footer background
     love.graphics.setColor(footerColor)
-    love.graphics.rectangle('fill', 0, 340, gameWidth, 140)
+    love.graphics.rectangle('fill', 0, 390, gameWidth, 90)
     
     -- Controls
     love.graphics.setColor(titleColor)
     love.graphics.setFont(titleFont)
     if gameState.bulkDownloadActive then
-        love.graphics.printf("Downloading... Press B to cancel", 0, 350, gameWidth, 'center')
+        love.graphics.printf("Downloading... Press B to cancel", 0, 410, gameWidth, 'center')
     else
-        love.graphics.printf("Press B to return to File list", 0, 350, gameWidth, 'center')
+        love.graphics.printf("Press B to return to File list", 0, 410, gameWidth, 'center')
     end
 end
 
