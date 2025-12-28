@@ -145,8 +145,15 @@ function osk.draw()
         for j, key in ipairs(row) do
             local keyW = (key == "Back" or key == "Enter") and keyWidth * specialKeyWidthMultiplier or keyWidth
             
-            -- Draw key border
-            love.graphics.rectangle("line", currentX, currentY, keyW, keyHeight)
+            -- Fill unpressed keys with progressBgColor
+            if not (i == oskSelection[1] and j == oskSelection[2]) then
+                love.graphics.setColor(0.55, 0.66, 0.35)  -- progressBgColor for unpressed keys
+                love.graphics.rectangle("fill", currentX, currentY, keyW, keyHeight)
+            end
+            
+            -- Draw key border (removed)
+            -- love.graphics.setColor(0.55, 0.66, 0.35)  -- Medium green color for the key borders
+            -- love.graphics.rectangle("line", currentX, currentY, keyW, keyHeight)
 
             -- Highlight the current selection
             if i == oskSelection[1] and j == oskSelection[2] then

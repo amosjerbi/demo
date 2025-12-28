@@ -141,15 +141,15 @@ function love.load()
     fontColors = {
         regular = {0.60, 0.60, 0.60} -- Medium gray text
     }
-    -- Color palette
-    bgColor = {0.62, 0.73, 0.42} -- Light green background
-    footerColor = {0.55, 0.66, 0.35} -- Darker green for footer
+    -- Color palette 
+    bgColor = {0.55, 0.66, 0.35} -- Light green background
+    footerColor = {0.447, 0.549, 0.259} -- Darker green for footer
     titleColor = {0.2, 0.3, 0.15} -- Dark green for titles
     textColor = {0.2, 0.3, 0.15} -- Dark green for text
     selectedColor = {0.69, 0.69, 0.69} -- Keep same for selections
     progressBgColor = {0.25, 0.25, 0.25} -- Keep same for progress bar
-    selectionBgColor = {0.35, 0.45, 0.25} -- Dark green background for selection
-    selectionTextColor = {0.75, 0.85, 0.55} -- Light green text for selected
+    selectionBgColor = {0.792, 0.855, 0.592} -- Light green background for selection
+    selectionTextColor = {0.2, 0.3, 0.15} -- Dark green text for selected
 end
 
 function love.update(dt)
