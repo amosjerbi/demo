@@ -116,7 +116,7 @@ function osk.draw()
     
 
     -- Draw the full-screen background
-    love.graphics.setColor(0.12, 0.12, 0.12, 0.95)  -- Semi-transparent black background
+    love.graphics.setColor(0.35, 0.45, 0.25, 0.95)  -- Semi-transparent dark green background
     love.graphics.rectangle("fill", 0, 0, push:getWidth(), push:getHeight())  -- Full screen
 
     -- Calculate the total width and height for the OSK
@@ -137,7 +137,7 @@ function osk.draw()
     local yOffset = (push:getHeight() - totalHeight) / 1.2
 
     -- Draw the keyboard keys
-    love.graphics.setColor(0.85, 0.85, 0.85)  -- Light silver color for the keys
+    love.graphics.setColor(0.55, 0.66, 0.35)  -- Medium green color for the keys
     local currentY = yOffset
 
     for i, row in ipairs(rows) do
@@ -150,12 +150,12 @@ function osk.draw()
 
             -- Highlight the current selection
             if i == oskSelection[1] and j == oskSelection[2] then
-                love.graphics.setColor(0.95, 0.95, 0.95, 0.8)  -- Bright white highlight
+                love.graphics.setColor(0.75, 0.85, 0.55, 0.8)  -- Light green highlight
                 love.graphics.rectangle("fill", currentX, currentY, keyW, keyHeight)
             end
 
             -- Reset color for text
-            love.graphics.setColor(0.60, 0.60, 0.60)  -- Medium gray color for text
+            love.graphics.setColor(0.2, 0.3, 0.15)  -- Dark green color for text
             
             -- Calculate the vertical offset to fine-tune the text position
             local verticalOffset = (keyHeight - font:getHeight()) 
@@ -174,7 +174,7 @@ function osk.draw()
     local textInputX = (push:getWidth() - textInputWidth) / 2
     local textInputY = yOffset - textInputHeight -60  -- Adjust position above the keyboard
 
-    love.graphics.setColor(0.85, 0.85, 0.85)  -- Light silver for the input text
+    love.graphics.setColor(0.75, 0.85, 0.55)  -- Light green for the input text
     local textWidth = font:getWidth(inputText)
     local textX = textInputX + (textInputWidth - textWidth) / 2
     local textY = textInputY + (textInputHeight - font:getHeight()) / 2

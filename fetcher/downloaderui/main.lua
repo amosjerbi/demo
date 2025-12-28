@@ -3,8 +3,8 @@ local push = require('push')
 local timer = require('timer')
 local osk = require('osk')
 
-local gameWidth, gameHeight = 640, 480
-local windowWidth, windowHeight = 640, 480
+local gameWidth, gameHeight = 720, 480
+local windowWidth, windowHeight = 720, 480
 
 -- Load platforms dynamically from fetcher.py
 local platforms = {}
@@ -82,8 +82,8 @@ local gameState = {
     selectedFile = 1,
     scrollOffset = 0,
     fileScrollOffset = 0,
-    maxVisible = 14,
-    maxFilesVisible = 14,
+    maxVisible = 10,
+    maxFilesVisible = 10,
     downloadStatus = "",
     fileList = {},
     fileListLoaded = false,
@@ -126,7 +126,7 @@ function love.load()
 
     -- Load pixely font at different sizes
     local fontPath = "assets/fonts/pixely.ttf"
-    titleFont = love.graphics.newFont(fontPath, 24)
+    titleFont = love.graphics.newFont(fontPath, 32)
     headerFont = love.graphics.newFont(fontPath, 18)
     bodyFont = love.graphics.newFont(fontPath, 20)
     smallFont = love.graphics.newFont(fontPath, 14)
@@ -141,13 +141,15 @@ function love.load()
     fontColors = {
         regular = {0.60, 0.60, 0.60} -- Medium gray text
     }
-    -- Color palette UI
-    bgColor = {0.12, 0.12, 0.12} -- Very dark black background
-    footerColor = {0.10, 0.10, 0.10} -- Very dark gray for footer
-    titleColor = {0.25, 0.25, 0.25} -- Medium gray for titles
-    textColor = {0.35, 0.35, 0.35} -- Medium gray for text
-    selectedColor = {0.69, 0.69, 0.69} -- Bright white for selections
-    progressBgColor = {0.25, 0.25, 0.25} -- Dark gray for progress bar background
+    -- Color palette
+    bgColor = {0.62, 0.73, 0.42} -- Light green background
+    footerColor = {0.55, 0.66, 0.35} -- Darker green for footer
+    titleColor = {0.2, 0.3, 0.15} -- Dark green for titles
+    textColor = {0.2, 0.3, 0.15} -- Dark green for text
+    selectedColor = {0.69, 0.69, 0.69} -- Keep same for selections
+    progressBgColor = {0.25, 0.25, 0.25} -- Keep same for progress bar
+    selectionBgColor = {0.35, 0.45, 0.25} -- Dark green background for selection
+    selectionTextColor = {0.75, 0.85, 0.55} -- Light green text for selected
 end
 
 function love.update(dt)
@@ -232,7 +234,7 @@ function drawMainScreen()
     love.graphics.printf("SELECT PLATFORM", 30, 15, gameWidth, 'left')
 
     local startY = 45
-    local itemHeight = 22
+    local itemHeight = 30
 
     for i = 1, math.min(gameState.maxVisible, #platforms) do
         local platformIndex = i + gameState.scrollOffset
@@ -240,8 +242,11 @@ function drawMainScreen()
             local platform = platforms[platformIndex]
             local yPos = startY + (i - 1) * itemHeight
 
+            -- Draw selection background rectangle
             if platformIndex == gameState.selectedPlatform then
-                love.graphics.setColor(selectedColor)  -- Orange text for selected
+                love.graphics.setColor(selectionBgColor)
+                love.graphics.rectangle('fill', 20, yPos - 2, gameWidth - 40, itemHeight + 2)
+                love.graphics.setColor(selectionTextColor)
             else
                 love.graphics.setColor(textColor)
             end
@@ -281,7 +286,7 @@ function drawPlatformScreen()
     love.graphics.printf("SELECT PLATFORM", 30, 25, gameWidth, 'left')
 
     local startY = 65
-    local itemHeight = 22
+    local itemHeight = 30
     
     for i = 1, math.min(gameState.maxVisible, #platforms) do
         local platformIndex = i + gameState.scrollOffset
@@ -289,8 +294,11 @@ function drawPlatformScreen()
             local platform = platforms[platformIndex]
             local yPos = startY + (i - 1) * itemHeight
             
+            -- Draw selection background rectangle
             if platformIndex == gameState.selectedPlatform then
-                love.graphics.setColor(selectedColor)  -- Orange text for selected
+                love.graphics.setColor(selectionBgColor)
+                love.graphics.rectangle('fill', 20, yPos - 2, gameWidth - 40, itemHeight + 2)
+                love.graphics.setColor(selectionTextColor)
             else
                 love.graphics.setColor(textColor)
             end
@@ -323,7 +331,7 @@ function drawFileListScreen()
         
         -- Loading animation
         local dots = string.rep(".", math.floor(love.timer.getTime() * 2) % 4)
-        love.graphics.setColor(selectedColor)
+        love.graphics.setColor(titleColor)
         love.graphics.printf("Loading" .. dots, 0, gameHeight / 2 - 12, gameWidth, 'center')
         return
     end
@@ -355,12 +363,12 @@ function drawFileListScreen()
     if gameState.isSearching and gameState.searchQuery ~= "" then
         love.graphics.setColor(textColor)
         love.graphics.setFont(titleFont)
-        love.graphics.printf("Search: \"" .. gameState.searchQuery .. "\"", 15, 45, gameWidth, 'right')
+        love.graphics.printf("Search: \"" .. gameState.searchQuery .. "\"", 30, 25, gameWidth - 60, 'right')
     end
     
     -- File list
     local startY = gameState.isSearching and gameState.searchQuery ~= "" and 85 or 65
-    local itemHeight = 22
+    local itemHeight = 30
     local currentList = gameState.isSearching and gameState.filteredFileList or gameState.fileList
 
     for i = 1, math.min(gameState.maxFilesVisible, #currentList) do
@@ -369,8 +377,11 @@ function drawFileListScreen()
             local file = currentList[fileIndex]
             local yPos = startY + (i - 1) * itemHeight
 
+            -- Draw selection background rectangle
             if fileIndex == gameState.selectedFile then
-                love.graphics.setColor(selectedColor)  -- Orange text for selected
+                love.graphics.setColor(selectionBgColor)
+                love.graphics.rectangle('fill', 20, yPos - 2, gameWidth - 40, itemHeight + 2)
+                love.graphics.setColor(selectionTextColor)
             else
                 love.graphics.setColor(textColor)
             end
