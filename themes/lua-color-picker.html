@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lua Color Picker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        .color-display {
+            width: 100%;
+            height: 120px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 3px solid #eee;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .rgb-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .rgb-input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rgb-input-group label {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        input[type="number"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .hex-input {
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .output-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .output-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .lua-output {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            position: relative;
+            border: 1px solid #4a5568;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .copy-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn.copied {
+            background: #48bb78;
+        }
+
+        .slider-container {
+            margin-bottom: 15px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+            margin: 10px 0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: 3px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: 3px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .red-slider {
+            background: linear-gradient(to right, #000 0%, #ff0000 100%);
+        }
+
+        .green-slider {
+            background: linear-gradient(to right, #000 0%, #00ff00 100%);
+        }
+
+        .blue-slider {
+            background: linear-gradient(to right, #000 0%, #0000ff 100%);
+        }
+
+        .hue-slider {
+            background: linear-gradient(to right, 
+                #ff0000 0%, #ffff00 16.66%, #00ff00 33.33%, 
+                #00ffff 50%, #0000ff 66.66%, #ff00ff 83.33%, #ff0000 100%);
+        }
+
+        .saturation-slider {
+            background: linear-gradient(to right, #808080 0%, #ff0000 100%);
+        }
+
+        .brightness-slider {
+            background: linear-gradient(to right, #000000 0%, #ffffff 100%);
+        }
+
+        .input-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .input-panel {
+            display: none;
+        }
+
+        .input-panel.active {
+            display: block;
+        }
+
+        .format-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .format-btn {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .format-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .rgb-inputs {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Lua Color Picker</h1>
+        
+        <div class="color-display" id="colorDisplay"></div>
+        
+        <div class="input-tabs">
+            <button class="tab-btn active" data-tab="rgb">RGB</button>
+            <button class="tab-btn" data-tab="hsb">HSB</button>
+        </div>
+
+        <div class="input-panel active" id="rgb-panel">
+            <div class="input-group">
+                <label>RGB Values (0-255)</label>
+                <div class="rgb-inputs">
+                    <div class="rgb-input-group">
+                        <label>Red</label>
+                        <input type="number" id="redInput" min="0" max="255" value="255">
+                        <input type="range" id="redSlider" class="slider red-slider" min="0" max="255" value="255">
+                    </div>
+                    <div class="rgb-input-group">
+                        <label>Green</label>
+                        <input type="number" id="greenInput" min="0" max="255" value="100">
+                        <input type="range" id="greenSlider" class="slider green-slider" min="0" max="255" value="100">
+                    </div>
+                    <div class="rgb-input-group">
+                        <label>Blue</label>
+                        <input type="number" id="blueInput" min="0" max="255" value="150">
+                        <input type="range" id="blueSlider" class="slider blue-slider" min="0" max="255" value="150">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-panel" id="hsb-panel">
+            <div class="input-group">
+                <label>HSB Values</label>
+                <div class="rgb-inputs">
+                    <div class="rgb-input-group">
+                        <label>Hue (0-360°)</label>
+                        <input type="number" id="hueInput" min="0" max="360" value="340">
+                        <input type="range" id="hueSlider" class="slider hue-slider" min="0" max="360" value="340">
+                    </div>
+                    <div class="rgb-input-group">
+                        <label>Saturation (0-100%)</label>
+                        <input type="number" id="saturationInput" min="0" max="100" value="61">
+                        <input type="range" id="saturationSlider" class="slider saturation-slider" min="0" max="100" value="61">
+                    </div>
+                    <div class="rgb-input-group">
+                        <label>Brightness (0-100%)</label>
+                        <input type="number" id="brightnessInput" min="0" max="100" value="100">
+                        <input type="range" id="brightnessSlider" class="slider brightness-slider" min="0" max="100" value="100">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Hex Color</label>
+            <input type="text" id="hexInput" class="hex-input" placeholder="#FF6496" maxlength="7">
+        </div>
+
+        <div class="output-section">
+            <div class="output-label">Lua Color Values</div>
+            
+            <div class="format-options">
+                <button class="format-btn active" data-format="table">Table Format</button>
+                <button class="format-btn" data-format="values">Separate Values</button>
+            </div>
+            
+            <div class="lua-output" id="luaOutput">
+                {1.0, 0.392, 0.588}
+            </div>
+            
+            <button class="copy-btn" id="copyBtn">📋 Copy Lua Values</button>
+        </div>
+    </div>
+
+    <script>
+        class LuaColorPicker {
+            constructor() {
+                this.initializeElements();
+                this.bindEvents();
+                this.updateColor();
+            }
+
+            initializeElements() {
+                this.colorDisplay = document.getElementById('colorDisplay');
+                
+                // RGB elements
+                this.redInput = document.getElementById('redInput');
+                this.greenInput = document.getElementById('greenInput');
+                this.blueInput = document.getElementById('blueInput');
+                this.redSlider = document.getElementById('redSlider');
+                this.greenSlider = document.getElementById('greenSlider');
+                this.blueSlider = document.getElementById('blueSlider');
+                
+                // HSB elements
+                this.hueInput = document.getElementById('hueInput');
+                this.saturationInput = document.getElementById('saturationInput');
+                this.brightnessInput = document.getElementById('brightnessInput');
+                this.hueSlider = document.getElementById('hueSlider');
+                this.saturationSlider = document.getElementById('saturationSlider');
+                this.brightnessSlider = document.getElementById('brightnessSlider');
+                
+                // Other elements
+                this.hexInput = document.getElementById('hexInput');
+                this.luaOutput = document.getElementById('luaOutput');
+                this.copyBtn = document.getElementById('copyBtn');
+                this.formatBtns = document.querySelectorAll('.format-btn');
+                this.tabBtns = document.querySelectorAll('.tab-btn');
+                this.rgbPanel = document.getElementById('rgb-panel');
+                this.hsbPanel = document.getElementById('hsb-panel');
+                
+                this.currentFormat = 'table';
+                this.updatingFromHSB = false;
+                this.updatingFromRGB = false;
+            }
+
+            bindEvents() {
+                // RGB input events
+                [this.redInput, this.greenInput, this.blueInput].forEach(input => {
+                    input.addEventListener('input', () => this.updateFromRGB());
+                });
+
+                // RGB Slider events
+                [this.redSlider, this.greenSlider, this.blueSlider].forEach((slider, index) => {
+                    slider.addEventListener('input', () => {
+                        const inputs = [this.redInput, this.greenInput, this.blueInput];
+                        inputs[index].value = slider.value;
+                        this.updateFromRGB();
+                    });
+                });
+
+                // HSB input events
+                [this.hueInput, this.saturationInput, this.brightnessInput].forEach(input => {
+                    input.addEventListener('input', () => this.updateFromHSB());
+                });
+
+                // HSB Slider events
+                [this.hueSlider, this.saturationSlider, this.brightnessSlider].forEach((slider, index) => {
+                    slider.addEventListener('input', () => {
+                        const inputs = [this.hueInput, this.saturationInput, this.brightnessInput];
+                        inputs[index].value = slider.value;
+                        this.updateFromHSB();
+                    });
+                });
+
+                // Hex input events
+                this.hexInput.addEventListener('input', () => this.updateFromHex());
+                this.hexInput.addEventListener('paste', (e) => {
+                    setTimeout(() => this.updateFromHex(), 10);
+                });
+
+                // Copy button
+                this.copyBtn.addEventListener('click', () => this.copyToClipboard());
+
+                // Format buttons
+                this.formatBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.formatBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentFormat = btn.dataset.format;
+                        this.updateLuaOutput();
+                    });
+                });
+
+                // Tab buttons
+                this.tabBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.tabBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        
+                        const tab = btn.dataset.tab;
+                        if (tab === 'rgb') {
+                            this.rgbPanel.classList.add('active');
+                            this.hsbPanel.classList.remove('active');
+                        } else {
+                            this.hsbPanel.classList.add('active');
+                            this.rgbPanel.classList.remove('active');
+                        }
+                    });
+                });
+            }
+
+            updateFromRGB() {
+                if (this.updatingFromHSB) return;
+                this.updatingFromRGB = true;
+
+                const r = Math.max(0, Math.min(255, parseInt(this.redInput.value) || 0));
+                const g = Math.max(0, Math.min(255, parseInt(this.greenInput.value) || 0));
+                const b = Math.max(0, Math.min(255, parseInt(this.blueInput.value) || 0));
+
+                // Update RGB sliders
+                this.redSlider.value = r;
+                this.greenSlider.value = g;
+                this.blueSlider.value = b;
+
+                // Update hex
+                const hex = '#' + [r, g, b].map(x => {
+                    const hex = x.toString(16);
+                    return hex.length === 1 ? '0' + hex : hex;
+                }).join('').toUpperCase();
+                
+                this.hexInput.value = hex;
+
+                // Update HSB values
+                const hsb = this.rgbToHsb(r, g, b);
+                this.hueInput.value = Math.round(hsb.h);
+                this.saturationInput.value = Math.round(hsb.s);
+                this.brightnessInput.value = Math.round(hsb.b);
+                this.hueSlider.value = Math.round(hsb.h);
+                this.saturationSlider.value = Math.round(hsb.s);
+                this.brightnessSlider.value = Math.round(hsb.b);
+
+                // Update slider gradients
+                this.updateSliderGradients();
+
+                this.updateColor();
+                this.updatingFromRGB = false;
+            }
+
+            updateFromHSB() {
+                if (this.updatingFromRGB) return;
+                this.updatingFromHSB = true;
+
+                const h = Math.max(0, Math.min(360, parseInt(this.hueInput.value) || 0));
+                const s = Math.max(0, Math.min(100, parseInt(this.saturationInput.value) || 0));
+                const b = Math.max(0, Math.min(100, parseInt(this.brightnessInput.value) || 0));
+
+                // Update HSB sliders
+                this.hueSlider.value = h;
+                this.saturationSlider.value = s;
+                this.brightnessSlider.value = b;
+
+                // Convert to RGB
+                const rgb = this.hsbToRgb(h, s, b);
+                
+                // Update RGB values
+                this.redInput.value = rgb.r;
+                this.greenInput.value = rgb.g;
+                this.blueInput.value = rgb.b;
+                this.redSlider.value = rgb.r;
+                this.greenSlider.value = rgb.g;
+                this.blueSlider.value = rgb.b;
+
+                // Update hex
+                const hex = '#' + [rgb.r, rgb.g, rgb.b].map(x => {
+                    const hex = x.toString(16);
+                    return hex.length === 1 ? '0' + hex : hex;
+                }).join('').toUpperCase();
+                
+                this.hexInput.value = hex;
+
+                // Update slider gradients
+                this.updateSliderGradients();
+
+                this.updateColor();
+                this.updatingFromHSB = false;
+            }
+
+            updateFromHex() {
+                let hex = this.hexInput.value.trim();
+                
+                // Remove # if present
+                if (hex.startsWith('#')) {
+                    hex = hex.substring(1);
+                }
+
+                // Handle 3-digit hex
+                if (hex.length === 3) {
+                    hex = hex.split('').map(char => char + char).join('');
+                }
+
+                // Validate hex
+                if (!/^[0-9A-Fa-f]{6}$/.test(hex)) {
+                    return;
+                }
+
+                // Convert to RGB
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+
+                // Update RGB inputs and sliders
+                this.redInput.value = r;
+                this.greenInput.value = g;
+                this.blueInput.value = b;
+                this.redSlider.value = r;
+                this.greenSlider.value = g;
+                this.blueSlider.value = b;
+
+                // Update HSB values
+                const hsb = this.rgbToHsb(r, g, b);
+                this.hueInput.value = Math.round(hsb.h);
+                this.saturationInput.value = Math.round(hsb.s);
+                this.brightnessInput.value = Math.round(hsb.b);
+                this.hueSlider.value = Math.round(hsb.h);
+                this.saturationSlider.value = Math.round(hsb.s);
+                this.brightnessSlider.value = Math.round(hsb.b);
+
+                // Ensure hex input has #
+                this.hexInput.value = '#' + hex.toUpperCase();
+
+                // Update slider gradients
+                this.updateSliderGradients();
+
+                this.updateColor();
+            }
+
+            updateColor() {
+                const r = parseInt(this.redInput.value) || 0;
+                const g = parseInt(this.greenInput.value) || 0;
+                const b = parseInt(this.blueInput.value) || 0;
+
+                // Update color display
+                this.colorDisplay.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+                // Update Lua output
+                this.updateLuaOutput();
+            }
+
+            updateLuaOutput() {
+                const r = parseInt(this.redInput.value) || 0;
+                const g = parseInt(this.greenInput.value) || 0;
+                const b = parseInt(this.blueInput.value) || 0;
+
+                // Convert to Lua values (0-1 range)
+                const luaR = (r / 255).toFixed(3);
+                const luaG = (g / 255).toFixed(3);
+                const luaB = (b / 255).toFixed(3);
+
+                let output;
+                if (this.currentFormat === 'table') {
+                    output = `{${luaR}, ${luaG}, ${luaB}}`;
+                } else {
+                    output = `${luaR}, ${luaG}, ${luaB}`;
+                }
+
+                this.luaOutput.textContent = output;
+            }
+
+            // HSB to RGB conversion
+            hsbToRgb(h, s, b) {
+                s /= 100;
+                b /= 100;
+                
+                const c = b * s;
+                const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+                const m = b - c;
+                
+                let r, g, bl;
+                
+                if (h >= 0 && h < 60) {
+                    r = c; g = x; bl = 0;
+                } else if (h >= 60 && h < 120) {
+                    r = x; g = c; bl = 0;
+                } else if (h >= 120 && h < 180) {
+                    r = 0; g = c; bl = x;
+                } else if (h >= 180 && h < 240) {
+                    r = 0; g = x; bl = c;
+                } else if (h >= 240 && h < 300) {
+                    r = x; g = 0; bl = c;
+                } else {
+                    r = c; g = 0; bl = x;
+                }
+                
+                return {
+                    r: Math.round((r + m) * 255),
+                    g: Math.round((g + m) * 255),
+                    b: Math.round((bl + m) * 255)
+                };
+            }
+
+            // RGB to HSB conversion
+            rgbToHsb(r, g, b) {
+                r /= 255;
+                g /= 255;
+                b /= 255;
+                
+                const max = Math.max(r, g, b);
+                const min = Math.min(r, g, b);
+                const diff = max - min;
+                
+                let h = 0;
+                const s = max === 0 ? 0 : diff / max;
+                const brightness = max;
+                
+                if (diff !== 0) {
+                    if (max === r) {
+                        h = ((g - b) / diff) % 6;
+                    } else if (max === g) {
+                        h = (b - r) / diff + 2;
+                    } else {
+                        h = (r - g) / diff + 4;
+                    }
+                    h *= 60;
+                    if (h < 0) h += 360;
+                }
+                
+                return {
+                    h: h,
+                    s: s * 100,
+                    b: brightness * 100
+                };
+            }
+
+            // Update slider gradients based on current values
+            updateSliderGradients() {
+                const h = parseInt(this.hueInput.value) || 0;
+                const s = parseInt(this.saturationInput.value) || 0;
+                const b = parseInt(this.brightnessInput.value) || 0;
+                
+                // Update saturation slider gradient
+                const satStart = this.hsbToRgb(h, 0, b);
+                const satEnd = this.hsbToRgb(h, 100, b);
+                this.saturationSlider.style.background = 
+                    `linear-gradient(to right, rgb(${satStart.r}, ${satStart.g}, ${satStart.b}) 0%, rgb(${satEnd.r}, ${satEnd.g}, ${satEnd.b}) 100%)`;
+                
+                // Update brightness slider gradient
+                const brightStart = this.hsbToRgb(h, s, 0);
+                const brightEnd = this.hsbToRgb(h, s, 100);
+                this.brightnessSlider.style.background = 
+                    `linear-gradient(to right, rgb(${brightStart.r}, ${brightStart.g}, ${brightStart.b}) 0%, rgb(${brightEnd.r}, ${brightEnd.g}, ${brightEnd.b}) 100%)`;
+            }
+
+            async copyToClipboard() {
+                try {
+                    await navigator.clipboard.writeText(this.luaOutput.textContent);
+                    
+                    // Visual feedback
+                    this.copyBtn.textContent = '✅ Copied!';
+                    this.copyBtn.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        this.copyBtn.textContent = '📋 Copy Lua Values';
+                        this.copyBtn.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                    
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = this.luaOutput.textContent;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    this.copyBtn.textContent = '✅ Copied!';
+                    this.copyBtn.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        this.copyBtn.textContent = '📋 Copy Lua Values';
+                        this.copyBtn.classList.remove('copied');
+                    }, 2000);
+                }
+            }
+        }
+
+        // Initialize the color picker when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const picker = new LuaColorPicker();
+            // Initialize slider gradients
+            picker.updateSliderGradients();
+        });
+    </script>
+</body>
+</html>
