@@ -83,6 +83,12 @@ function osk.update(dt)
         elseif joystick:isGamepadDown("b") then
             osk.handleKeyPress("Back")
             timeSinceLastInput = 0
+        elseif joystick:isGamepadDown("start") then
+            osk.handleKeyPress("Enter")
+            timeSinceLastInput = 0
+        elseif joystick:isGamepadDown("back") then
+            osk.handleKeyPress("Clear")
+            timeSinceLastInput = 0
         end
     end
 end
@@ -100,6 +106,9 @@ function osk.handleKeyPress(key)
         end
         osk.hide()
           -- Hide OSK
+    elseif key == "Clear" then
+        -- Handle special key `Clear` - clear all input
+        inputText = ""
     else
         -- Check if adding the new key would exceed the limit
         if #inputText < 10 then
@@ -116,6 +125,7 @@ function osk.draw()
     
 
     -- Draw the full-screen background
+    -- love.graphics.setColor(0.35, 0.45, 0.25, 0.95)  -- Semi-transparent dark green background
     love.graphics.setColor(0.35, 0.45, 0.25, 0.95)  -- Semi-transparent dark green background
     love.graphics.rectangle("fill", 0, 0, push:getWidth(), push:getHeight())  -- Full screen
 
@@ -157,7 +167,7 @@ function osk.draw()
 
             -- Highlight the current selection
             if i == oskSelection[1] and j == oskSelection[2] then
-                love.graphics.setColor(0.75, 0.85, 0.55, 0.8)  -- Light green highlight
+                love.graphics.setColor(0.776, 0.878, 0.020)  -- Light green highlight
                 love.graphics.rectangle("fill", currentX, currentY, keyW, keyHeight)
             end
 
@@ -181,7 +191,7 @@ function osk.draw()
     local textInputX = (push:getWidth() - textInputWidth) / 2
     local textInputY = yOffset - textInputHeight -60  -- Adjust position above the keyboard
 
-    love.graphics.setColor(0.75, 0.85, 0.55)  -- Light green for the input text
+    love.graphics.setColor(0.129, 0.259, 0.192)  -- dark green for the input text
     local textWidth = font:getWidth(inputText)
     local textX = textInputX + (textInputWidth - textWidth) / 2
     local textY = textInputY + (textInputHeight - font:getHeight()) / 2
